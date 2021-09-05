@@ -10,11 +10,11 @@
   </bean>
 
   <bean id="quest" class="sia.knights.SlayDragonQuest">
-    <constructor-arg ref="fakePrintStream" />
+    <constructor-arg value="#{T(System).out}" />
   </bean>
 
   <bean id="minstrel" class="sia.knights.Minstrel">
-    <constructor-arg ref="fakePrintStream" />
+    <constructor-arg value="#{T(System).out}" />
   </bean>
 
   <bean id="fakePrintStream" class="sia.knights.FakePrintStream" />

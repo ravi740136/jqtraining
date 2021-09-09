@@ -13,7 +13,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes=KnightConfig.class,loader=AnnotationConfigContextLoader.class)
+//@ContextConfiguration(classes=KnightConfig.class,loader=AnnotationConfigContextLoader.class)
+@ContextConfiguration(classes=KnightConfig.class)
 public class KnightJavaConfigInjectionTest {
 
   @Autowired

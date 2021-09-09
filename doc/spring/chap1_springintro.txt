@@ -1,0 +1,4 @@
+Spring was created to simplify development of enterprise java application
+It made it by allowing plane vanilla java beans to do things which were earlier
+possible only through EJBs
+But spring can be used not only on server side but 

@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class CDPlayerConfig {
-
+//name of the bean is the method name used to create the bean
 	@Bean
 	public CompactDisc compactDisc() {
 		// return new SgtPeppers();
@@ -22,16 +22,22 @@ public class CDPlayerConfig {
 	 * 
 	 */
 	
+	@Bean 
+	 public MediaPlayer myPlayer(CompactDisc cd) {
+		CDPlayer cdp = new CDPlayer();
+		cdp.setCompactDisc(cd);
+	  return cdp;
+	  }
 	
 	// try injecting cd through constructor and also with
 	// autowiring
-	@Bean
+	/*@Bean
 	public MediaPlayer myPlayer(CompactDisc cd) {
 		return new CDPlayer(cd);
 		// return new BluerayPlayer(cd);
 		// return new BluerayPlayer();
 
-	}
+	}*/
 
 	@Bean
 	public PrintBeans myPrint() {

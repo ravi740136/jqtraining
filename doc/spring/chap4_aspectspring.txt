@@ -1,0 +1,60 @@
+separating cross cutting concerns from application business logic
+There are some features like logging, security and transactions
+which have to be dealt across the application in many places
+
+Aspect oriented programming:
+keep common functionality in one place and define where and when it can 
+be applied
+Thus the concerns are modularized into special classes called aspects 
+ and the service modules will concentrate on core functionality
+ 
+ Terminology:
+ Advice:
+ defines the job do be done on the join points , what and also when
+ is it before execution of method or after etc
+ allowed when points are
+ before
+ after: irrespective of failure of the method
+ after-returning: successful execution of the method
+ after-throwing: if method fails with exception
+ around: it encloses the call to the method, it will run before and after
+ 
+ join points:
+ potential candidates where the advice can be plugged in, like all the 
+  method calls, modifying field value etc. Spring aop supports only 
+  method execution as join point
+  
+ point cuts:
+ will narrow down the join points where exactly the advice needs to be applied
+ By specifying exact class name and method name or through regular expression
+ 
+ aspect:
+ Taken together Advice and point cuts will form an aspect
+ it knows what, when and where
+ 
+ weaving:
+ is the process of applying the advice to the target object
+ 
+ runtime: In spring aop the weaving happens during execution of the application
+ it creates a proxy object which delegates to the target object and 
+ the advice gets attached at the join points
+ 
+ AOP methods:
+ AOP framework's duty is to define point cuts that define join points
+ where aspects should be woven
+ 
+ Spring AOP supports two methods
+ 1. convert POJOs into aspects by using declarations in xml documents. 
+ These POJOs will contain methods that need to be executed around the join points
+ This is how simple objects can be converted into advices
+ 
+ 2. Spring AOP uses Aspectj annotations to define aspects. But under the covers 
+ it is still spring's proxy based aop. This will avoid XML configuration
+ 
+ Spring AOP supports only methods as join points , if we need constructor 
+ or property interception AspectJ libraries need to be used
+ 
+ Weaving at runtime:
+ Spring proxy object encloses the target object. It intercepts the method call
+ And later makes call to method in target object. In between it will weave 
+ the advice logic

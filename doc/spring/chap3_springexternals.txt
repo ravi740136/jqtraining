@@ -1,0 +1,161 @@
+@ActiveProfiles is used to set the active profiles in spring application or test
+@Profile can be used to associate a bean with a profile in configuration class
+
+To test profiles create datasource as follows:
+In spring we can use Datasource object to access the database, create a bean of
+ type Datasource using bean annotation in configuration class
+ To cleanup the datasource resources when context is being closed
+ use "shutdown" as destroymethod for @bean
+ Use EmbeddedDatabaseBuilder type and script properties to setup the database
+ add create table script to schema.sql
+ add insert into script to test-data.sql and keep the scripts in resources folder
+ autowire datasource bean in the test or application
+ Use classpath: to access resources files
+ create jdbctemplate object using the datasource object
+ implement rowmapper to return an object mapping to the row
+ query using template and row mapper to get list of objects mappping to rows
+  in resultset
+  Now we can assert the data , no of rows etc
+To add classes with different active profiles add the classes as static 
+  in same test class, associate the active profile using @ActiveProfiles 
+  annotation
+  In configuration class associate the profile to bean using @Profile annotation
+  when test is executed if the profile of the bean equals to active profile of 
+  the class, that bean will be used in the test
+To add datasource using xml configuration use jdbc-embeddeddatabase element
+which will create datasource bean, we can specify type attribute and 
+script elements in this xml element, did not find way to set primary bean, 
+but can use qualifier annotation
+also in context configuration specify xml file from classpath, which is 
+having beans declarations
+
+uniqueness of bean:
+To give unique name to the bean in java configuration use the value of 
+@component annotation, otherwise the type name will become bean name
+by changing first letter to small case. Now this unique name can be used 
+as qualifier at the injection point
+for @Bean annotaion beans, default name will be the method name which is 
+returning the bean objects. we can use the value, value attribute or 
+name attribute to give unique name to the bean
+we can use this name or the @qualifier name to use as qualifier in the 
+injection point using @qualifier annotation
+if qualifier not used at injection point and multiple beans match with the 
+type of autowired field, then the bean whose name matches with the field name
+gets injected by default. we can override the behavior using proper qualifier
+@primary annotation used on a bean configuration to denote it as default bean
+object of that specific type. This can be used along with component or bean
+annotations
+In xml configuration we can use primary attribute as follows
+<bean id="iceCream" class="com.desserteater.IceCream" primary="true" />
+@qualifier("cold") annotation is used on the bean object and injection point like
+ @autowired
+ sometime we may want to associate multiple qualifiers to uniquely identify the
+ bean like 
+ "cold" and "sweet". But java does not allow it.
+ instead of that we can create new annotation by associating
+ qualifier to it, now instead of using multiple qualifiers on the bean
+ we can use the newly created annotations on the bean and injection point
+ @Target({ElementType.CONSTRUCTOR, ElementType.FIELD,
+                 ElementType.METHOD, ElementType.TYPE})
+        @Retention(RetentionPolicy.RUNTIME)
+        @Qualifier
+        public @interface Cold { }
+
+now we can associate cold annotation to beans and injection points
+@Component
+@Cold
+@Creamy
+public class IceCream implements Dessert { ... }
+
+while creating marker annotation
+Retention policy indicates till when the annotation be retained like source,
+class or runtime
+Target type field indicates the field declaration, target type Type indicate 
+the class, enum or interface declaration, also we have target type parameter
+
+qualifiers using xml configuration:
+we can ovverride the qualifier associated with a component using qualifier nested 
+element like <qualifier value="sax2"> </qualifier> within bean element
+To identify the annotations in bean classes use <context:annotation-config /> 
+in the xml configuration
+along with custom qualifier annotations, we can use qualifier annotation
+to uniquely identify the bean to be injected
+spring will look for the xml file in resources in the folders matching the
+ package structure of the test classes, if we hust specify the xml file name 
+ in @contextconfiguration of the test class
+
+
+Conditional beans:
+In configuration class while adding beans to application context, we can have 
+@conditional annotation along with @bean annotation to which we can have 
+a condition class as parameter.
+condition class implements condition interface which is having matches method
+which returns boolean value .
+The bean object is created only if the condition is true
+For example we can check for a property presence in the environment
+environment can be autowired in any spring component class
+a property can be added to environment through propertysource annotation
+or by system class in configuration method for a test like @beforeclass
+method
+beforclass method should be declared public static
+
+scoped beans:
+Along with the scopes below we also have request and session scopes which 
+are used in web applications
+In component scan if we want to exclude certain annotation like configuration 
+use excludefilters and filter type annotation and value/classes is configuration.class
+@ComponentScan(excludeFilters={@Filter(type=FilterType.ANNOTATION, 
+value=Configuration.class)})
+
+default scope of bean is "singleton" that means, spring creates that bean 
+only once for the application , whenever we try to access that type of bean same bean is
+returned
+
+"prototype" bean is created everytime we try to get the bean from context
+@scope annotation and configurablebeanfactory are used on the bean method
+to declare the scope of the bean
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+
+scope can be specified for beans in 3 ways
+scope can be defined on bean methods in the configuration class 
+and also on the component classes
+scope can be defined in xml configuration files also in the scope attribute
+bean elements
+<bean class="com.myapp.Notepad" scope="prototype" />
+
+the xml configuration can be made available to the test method using classpath
+@ContextConfiguration("classpath:scoped-beans.xml")
+application context object can be autowired to the test class which can be used
+to get bean objects
+junit assertNotSame and assertSame methods can be used to check same objects
+or different objects
+
+External values :
+External values are stored in properties file
+In java configuration use @PropertySource annotaion on configuration file
+and it should point to properties file using classpath:
+Now these properties are automatically available in Environment object
+Environment object can be injected through autowiring
+env.getProperty will fetch the value of the property
+getProperty with default value will use the value in case property not available
+env.getRequiredProperty("disc.title") will through exception when property not available
+instead of causing null pointer exception
+In xml config we can use property placeholder element to access the properties
+and initialize beans using property values
+<context:property-placeholder
+    location="com/soundsystem/app.properties" />
+environment property can be accessed in xml configuration file using following
+ notation ${disc.title}
+ we can expect BeanCreationException when creating application context and one of 
+ the beans dependent on required properties which are not available
+ The test annotation attribute expected=BeanCreationException.class attribute 
+ can be used to test the exception
+ AnnotationConfigApplicationContext can be used to create context object
+ Test context can be configured using xml also
+ @ContextConfiguration("classpath:placeholder-config.xml")
+ 
+
+
+  
+
+ 

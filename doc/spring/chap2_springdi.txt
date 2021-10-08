@@ -1,0 +1,128 @@
+For any non trivial application objects should communicate with each
+other to get the job done for example for online shopping application
+order manager , product manager, credicard authorization component, data
+access should work together But normal way of collaboration causes
+coupling problem
+
+Normally objects need to find and create the objects they need. In
+spring container provides the references to objects needed by the
+object. Thus it will take care of association between objects. It is
+called wiring which is implemented by dependency onjection (DI)
+
+configuring spring/spring configuration options: developer should tell
+spring container what beans to create and what associations to be made 3
+types of configurations xml, java and auto auto is the best, avoid
+explicit configurations as much as possible we can mix three types of
+configurations in same application as per convenience in case of
+explicit configuration prefer java configuration and use xml only if it
+has some namespace whose feature not available in java configuration
+
+Auto configuration: 
+@componentscan : finds out what beans have to be created and creates the
+ beans
+@Autowired: supports the associations, automatically injects the 
+dependencies 
+
+@component: supports component scanning by the container. Helps identifying 
+classes whose beans to be created by the container
+
+@configure: identifies the class as configuration class which enables loading
+configuration into the container. componentscan annotation can be specified to 
+configuration class, which initiates the component scanning. This class is also
+a component, so bean is created for this class also
+componentscan by default is done in the package and sub packages of the 
+configuration class package. basepackages and classes can be explicitly specified 
+through attribute when classes are specified scan happens in the packages and 
+subpackages of the specified classes
+
+componentscan from xml file:
+using context namespace componentscan can be enabled from xml file also
+
+java configuration:
+@runwith @extendwith: juint4 uses runwith and junit5 uses @extendwith annotations 
+application context object is created using these annotations on the test class
+@contextconfiguration: used to specify the configuration classes through which
+the configuration can be loaded to container, classes can be specified using 
+attribute classes=CDPlayerConfig.class
+runner class: SpringJUnit4ClassRunner
+
+configuration class: 
+@Configuration annotation is used for the class
+@Bean annotation is used for the methods that create and return beans
+beans are created with the name of the method used for returning the bean object
+container creates and manages the beans and takes care of associations
+it can pass one bean as parameter to the other using bean methods
+we can use call to the bean method also as parameter
+by default it is singleton bean and same bean is used for wiring anywhere in the
+project
+any constructor can be used in the bean methods to create the bean
+This configuration class is referred by the test class to load the configuration 
+or beans to the spring context which are managed by the container. container will
+ inject the beans at injection points like @autowired .
+ Usually we use interface type as return type for the bean method so that we can
+ return object of any class implementing the method
+ 
+ Test class uses references of interface type , it has no idea which implementaion
+ of the interface is injected and internally the object is associated with 
+ which other classes. configuration class will have the required information
+ we can change the implementations in the configuration class and verify the test
+ we use constructor or setter methods of the bean to pass the associated 
+ beans from bean method in config class. we can also auto wire the associated bean
+ using autowired annotation in the bean class. we can auto wire the beans in test 
+ classes also to use the beans or to do assertions
+ by default autowiring is done based on the data type of the bean, there are no
+ issues if there is only one bean of a specific type
+ 
+ we can autowire the application context to the testclass using the class
+ Applicationcontext and get all the beans by the annotation @bean to see
+ the all bean objects created using the @bean annotation
+ 
+ Auto configuration:
+ @componentscan annotation is specified for the configuration class
+ baskepackages attribute is used to specify the package which needs to be scanned
+ spring will scan for @component classes in the given package and sub packages also
+ 
+ Different base packages can be specified separated by commas , entire value 
+ enclosed in quotes. Now scanning is done in all packages including their sub packages
+ 
+ If any of the classes in these packages is @configuration class, then scanning 
+ is done in the classes related with the configuration class also.
+ 
+ basepackageclasses: An attribute where an array of classes are specified 
+ separated by commas. scanning is done in the package of the class and also
+ in its subpackages
+ 
+ If any of the classes in these packages is @configuration class, then scanning 
+ is done in the classes related with the configuration class also.
+ 
+ configuration class with @bean annotations: beans are auto scanned and created
+ even if configuration class is having bean methods
+ 
+ @Autowired is used to inject the beans created during scan using @component
+ and @Bean annotations, these can be injected in test class, component classes
+ 
+ if we want to have scan both based on base package classes and base packages
+ we can have multiple @componentscan annotations on same configuration class
+ 
+ @componentscan can be defined using string value containing comma separated 
+ packages without using attributes
+ 
+ @component annotation is used to define the classes for which beans need to be
+created and managed by spring
+
+@Autowired can be used in all the classes whose beans are create by spring
+using @component or @bean annotaion. It can be used field, constructor, property
+and parameter levels
+
+xml configuration:
+auto configuration can be specified in xml file also. component scan element can 
+specified in xml file with basepackage attribute. if you want to specify multiple 
+base package we can use multiple componentscan elements using context namespace
+
+ <context:component-scan base-package="configure.components" />
+  <context:component-scan base-package="configure.beans" />
+ 
+
+
+
+

@@ -4,14 +4,12 @@
   xmlns:c="http://www.springframework.org/schema/c"
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-  <bean class="soundsystem.CDConfig" />
-
+  
+<import resource="cd-config.xml"/>
 <!-- cdPlayer bean is created using compactDisc bean, which 
-will be available as we are importing it by creating bean of 
-CDConfig class -->
+will be available as we are importing it by importing xml config 
+-->
   <bean id="cdPlayer"
         class="soundsystem.CDPlayer"
-        c:cd-ref="compactDisc" />
-        
-        
+        c:cd-ref="compactDisc" />       
 </beans>

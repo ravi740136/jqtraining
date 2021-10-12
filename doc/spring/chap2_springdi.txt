@@ -121,7 +121,27 @@ base package we can use multiple componentscan elements using context namespace
 
  <context:component-scan base-package="configure.components" />
   <context:component-scan base-package="configure.beans" />
- 
+  
+Mixed Configuration:
+--------------------
+This is without component scan, we are combining multiple configuration files
+From java configuration file we can import other java configuration files
+using @import
+We can import an xml configuration file using @importresource annotation
+A configuration file having some beans configuration can import some other configuration
+file
+It can import java configuration or xml configuration using import or 
+importresource annotations
+A blank configuration file can be created by importing both java and xml 
+configuration files
+From xml configuration file, if this is used in test context configuration, 
+a java configuration file can be imported by adding it as bean in xml configuration
+file
+From xml config file we can import some other xml configuration using <import>
+element with resource attribute
+
+
+
 
 
 

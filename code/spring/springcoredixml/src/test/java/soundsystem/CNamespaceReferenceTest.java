@@ -14,8 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration
 public class CNamespaceReferenceTest {
 
-  @Rule
-  public final StandardOutputStreamLog log = new StandardOutputStreamLog();
+  
 
   @Autowired
   private MediaPlayer player;

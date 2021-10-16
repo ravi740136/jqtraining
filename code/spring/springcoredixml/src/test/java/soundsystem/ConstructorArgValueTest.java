@@ -19,8 +19,7 @@ public class ConstructorArgValueTest {
 
 	@Test
 	public void play() {
-		;
-		assertEquals("Playing Sgt. Pepper's Lonely Hearts Club Band by The Beatles\n", player.play());
+		assertEquals("Playing Sgt. Pepper's Lonely Hearts Club Band by The Beatles", player.play());
 	}
 
 }

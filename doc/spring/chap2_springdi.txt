@@ -140,6 +140,34 @@ file
 From xml config file we can import some other xml configuration using <import>
 element with resource attribute
 
+XML CONFIGURATION:
+xml configuration is used only if auto and java configurations are not possible
+for a specific feature
+values can be passed to constructor using constructor-arg element.
+value attribute is used to pass string value and 
+ref attribute is used to refer to an existing bean using its identifier
+if constructor argument is a list object then list element should be enclosed 
+in the the constructor-arg element
+property element should be used to set value to the field if the field has a 
+setter method. property name is the name that appears in the setter method
+we use name and value attributes to set the property
+we use name and ref attributes to set any existing bean to the property
+list object can be enclosed in property element
+c: namespace can be used as alternate for construtor-arg elements
+c:<fieldname> can be used as attribute to bean element 
+to set value to a constructor argument
+c:<fieldname>-ref can be used to pass an object to a constructor argument
+p: namespace can be used as attribute for bean element to set property
+p:<propertyname> can be used to set value to a property
+p:<propertyname>-ref can be used to set object to a property
+util: name space can be used to create utility beans like list, map etc
+util:list element can be used to create a list object which can be referred by 
+ref attribute or c:<field>-ref or p:<field>-ref attributes while creating a bean
+util, c, p name spaces should be defined at the top of the xml document in
+ the beans element
+
+
+
 
 
 
